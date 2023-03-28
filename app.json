@@ -25,6 +25,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c3d5c75d-dc2f-40fa-b593-7e7fdbae942b"
+      }
+    },
+    "owner": "aicccia",
+    "plugins": [
+      "expo-build-properties"
+    ]
   }
 }
