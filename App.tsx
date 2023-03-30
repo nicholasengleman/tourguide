@@ -1,16 +1,40 @@
+import { useCallback } from 'react';
+import { View } from 'react-native';
+import 'react-native-gesture-handler';
 import * as eva from '@eva-design/eva';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
-import HomeScreen from './screens/HomeScreen';
+import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { ApplicationProvider } from '@ui-kitten/components';
+import { RootNavStack } from './components/Navigation/RootNavStack';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    'Roboto-Regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+    'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <ApplicationProvider {...eva} theme={eva.light}>
-      <SafeAreaProvider>
-        <HomeScreen />
-      </SafeAreaProvider>
-    </ApplicationProvider>
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <RootNavStack />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </ApplicationProvider>
+    </View>
   );
 }
