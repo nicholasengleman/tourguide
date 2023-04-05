@@ -1,7 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../../screens/HomeScreen';
 import CityScreen from '../../screens/CityScreen';
-import { RootStackParamList } from '../../routes';
+import AttractionScreen from '../../screens/AttractionScreen';
+import { RootStackParamList } from '../../../routes';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -16,6 +17,7 @@ export const RootNavStack = () => {
         }}
       />
       <RootStack.Screen name='City' component={CityScreen} />
+      <RootStack.Screen name='Attraction' component={AttractionScreen} />
     </RootStack.Navigator>
   );
 };

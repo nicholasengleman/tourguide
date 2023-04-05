@@ -3,7 +3,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from './Button';
-import { NavigationProps } from '../routes';
+import { NavigationProps } from '../../routes';
 
 interface CityTileProps {
   image: string;

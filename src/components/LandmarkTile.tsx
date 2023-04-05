@@ -1,14 +1,23 @@
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProps } from '../../routes';
 import { Text } from '@ui-kitten/components';
 
 interface LandmarkTileProps {
   name: string;
   image: string;
+  onPress: () => void;
 }
 
 const LandMarkTile: React.FC<LandmarkTileProps> = ({ name, image }) => {
+  const navigation = useNavigation<NavigationProps>();
+
+  const onPress = () => {
+    navigation.navigate('Attraction', { name });
+  };
+
   return (
-    <View style={styles.tile}>
+    <Pressable style={styles.tile} onPress={onPress}>
       <View style={styles.content}>
         <View style={styles.imageContainer}>
           <Image
@@ -18,12 +27,10 @@ const LandMarkTile: React.FC<LandmarkTileProps> = ({ name, image }) => {
           />
         </View>
         <View style={styles.textContent}>
-          <Text style={styles.cityName} category='p'>
-            {name}
-          </Text>
+          <Text style={styles.cityName}>{name}</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

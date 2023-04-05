@@ -1,3 +1,4 @@
+import 'react-native-url-polyfill/auto';
 import { useCallback } from 'react';
 import { View } from 'react-native';
 import 'react-native-gesture-handler';
@@ -6,7 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ApplicationProvider } from '@ui-kitten/components';
-import { RootNavStack } from './components/Navigation/RootNavStack';
+import { RootNavStack } from './src/components/Navigation/RootNavStack';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 

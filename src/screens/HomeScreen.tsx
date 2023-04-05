@@ -2,7 +2,7 @@ import { Layout, Text } from '@ui-kitten/components';
 import { Dimensions, SafeAreaView, StyleSheet } from 'react-native';
 import CityTile from '../components/CityTile';
 import Carousel from 'react-native-reanimated-carousel';
-import data from '../data';
+import data from '../../data';
 
 const HomeScreen = () => {
   const width = Dimensions.get('window').width;

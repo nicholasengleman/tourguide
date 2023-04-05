@@ -1,6 +1,6 @@
 import { Image, StyleSheet, View, SafeAreaView, FlatList } from 'react-native';
 import { Text } from '@ui-kitten/components';
-import data from '../data';
+import data from '../../data';
 import LandMarkTile from '../components/LandmarkTile';
 
 const CityScreen = ({ route }) => {
