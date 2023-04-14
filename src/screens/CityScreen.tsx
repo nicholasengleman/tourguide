@@ -20,7 +20,9 @@ const CityScreen = ({ route }) => {
         <FlatList
           data={city?.landmarks}
           numColumns={2}
-          renderItem={({ item }) => <LandMarkTile {...item} />}
+          renderItem={({ item }) => (
+            <LandMarkTile {...item} city={city.cityName} />
+          )}
           keyExtractor={(item) => item.name}
         />
       </View>

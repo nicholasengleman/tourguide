@@ -1,5 +1,7 @@
 <script src='http://192.168.1.16:8097'></script>;
 
+import { QuestionDataType } from '../services/FirestoreService';
+
 import { useEffect, useState } from 'react';
 import {
   StyleSheet,
@@ -11,70 +13,96 @@ import {
 } from 'react-native';
 import { Spinner } from '@ui-kitten/components';
 import OpenAIService from '../services/OpenAIService';
+import { getQuestion, addQuestion } from '../services/FirestoreService';
 
-const AttractionScreen: React.FC<AttractionScreenProps> = ({ route }) => {
-  const [description, setDescription] = useState<string>('');
-  const [questions, setQuestions] = useState<[]>([]);
-  const name = route.params.name;
+const AttractionScreen = ({ route }) => {
+  const [data, setData] = useState<QuestionDataType>({
+    answer: '',
+    city: '',
+    followUpQuestions: [],
+    landmark: '',
+    parentQuestion: '',
+    question: '',
+  });
+  const { name, city } = route.params;
 
-  useEffect(() => {
-    const fetchAttraction = async () => {
-      try {
-        const attraction = await OpenAIService.getDescription(name);
-        const data = JSON.parse(attraction?.content);
-        if (data?.description) {
-          setDescription(data?.description);
-        }
-
-        if (data?.questions) {
-          setQuestions(data?.questions);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchAttraction();
-  }, [name]);
-
-  const getNewDescription = async (question: string) => {
-    setDescription('');
+  const fetchAnswer = async ({ question, followUpQuestion }: { question:string, followUpQuestion: string }) => {
+    setData({
+      answer: '',
+      city: '',
+      followUpQuestions: [],
+      landmark: '',
+      parentQuestion: '',
+      question: '',
+    });
 
     try {
-      const attraction = await OpenAIService.askNewQuestions(question);
-      const data = JSON.parse(attraction?.content);
-      if (data?.description) {
-        setDescription(data?.description);
-      }
+      const data = await getQuestion(followUpQuestion);
+      if (data) {
+        setData(data);
+      } else {
 
-      if (data?.questions) {
-        setQuestions(data?.questions);
+        const attraction = await OpenAIService.askQuestion({
+          name,
+          city,
+          followUpQuestion,
+        });
+        console.log('Data received from Open AI Service:');
+
+        const data = JSON.parse(attraction?.message.content);
+        if (data) {
+          setData({
+            ...data,
+            question: followUpQuestion,
+            parentQuestion: question,
+          });
+          addQuestion({
+            ...data,
+            question: followUpQuestion,
+            parentQuestion: question,
+          });
+        }
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    fetchAnswer({ question: '', followUpQuestion: `about the ${name}` });
+  }, [name]);
+
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.main}>
-        {!description && (
+        {!data.answer && (
           <View style={styles.spinner}>
             <Spinner size='giant' />
           </View>
         )}
-        {description && (
+        {data?.answer && (
           <>
             <ScrollView>
-              <Text style={styles.description}>{description}</Text>
+              <Text style={styles.title}>{data.question}</Text>
+              <Text style={styles.description}>{data.answer}</Text>
             </ScrollView>
+            {data.parentQuestion && (
+              <Pressable
+                onPress={() => fetchAnswer({ question: '', followUpQuestion: data.parentQuestion })}
+                style={styles.goBackBtn}
+              >
+                <Text style={styles.goBackBtnTxt}>Go back</Text>
+              </Pressable>
+            )}
+
             <View style={styles.questionContainer}>
-              {questions?.map((question) => (
+              {data.followUpQuestions?.map((followUpQuestion) => (
                 <Pressable
                   style={styles.questionBtn}
-                  onPress={() => getNewDescription(question)}
-                  key={question}
+                  onPress={() => fetchAnswer({ question: data.question, followUpQuestion })}
+                  key={followUpQuestion}
                 >
-                  <Text style={styles.question}>{question}</Text>
+                  <Text style={styles.question}>{followUpQuestion}</Text>
                 </Pressable>
               ))}
             </View>
@@ -95,6 +123,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  title: {
+    fontSize: 14,
+    marginLeft: 10,
+    marginTop: 20,
+    color: '#807575',
+    fontStyle: 'italic',
+  },
   description: {
     marginBottom: 20,
     fontSize: 18,
@@ -111,10 +146,24 @@ const styles = StyleSheet.create({
   },
   questionBtn: {
     backgroundColor: '#594c4c',
-    paddingVertical: 7,
+    paddingVertical: 8,
     paddingHorizontal: 10,
     marginBottom: 5,
     borderRadius: 5,
+  },
+  goBackBtn: {
+    backgroundColor: '#c4b9b9',
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    marginTop: 20,
+    marginBottom: 5,
+    borderRadius: 5,
+    color: '#3f3737',
+    alignSelf: 'flex-start',
+  },
+  goBackBtnTxt: {
+    color: '#4f4747',
+    fontSize: 12,
   },
   question: {
     fontSize: 14,

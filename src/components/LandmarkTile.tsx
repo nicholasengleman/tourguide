@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { View, Image, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProps } from '../../routes';
@@ -6,14 +7,15 @@ import { Text } from '@ui-kitten/components';
 interface LandmarkTileProps {
   name: string;
   image: string;
+  city: string;
   onPress: () => void;
 }
 
-const LandMarkTile: React.FC<LandmarkTileProps> = ({ name, image }) => {
+const LandMarkTile: React.FC<LandmarkTileProps> = ({ name, image, city }) => {
   const navigation = useNavigation<NavigationProps>();
 
   const onPress = () => {
-    navigation.navigate('Attraction', { name });
+    navigation.navigate('Attraction', { name, city });
   };
 
   return (
