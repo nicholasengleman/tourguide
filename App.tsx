@@ -1,4 +1,5 @@
 import 'react-native-url-polyfill/auto';
+import 'react-native-get-random-values';
 import { useCallback } from 'react';
 import { View } from 'react-native';
 import 'react-native-gesture-handler';

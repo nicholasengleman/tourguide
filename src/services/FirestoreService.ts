@@ -50,21 +50,3 @@ export async function addQuestion(data: QuestionDataType): Promise<void> {
     console.error('Error adding document:', e);
   }
 }
-
-// Collection: landmarks
-// name: string
-// city: string
-// initialQuestion: string
-
-// Collection: questions
-// city: string
-// landmark: string
-// root: boolean
-// question: string
-// answer: string
-// follow-up-questions: array of strings
-
-// 1. When a city is selected, load all the landmarks and their initial questions(questions with a property of root) for that city
-// 2. When a landmark is selected, display the root question and fetch the follow-up questions for that landmark
-//   a. Check if the questions exist in firestore. If they do, fetch them from firestore.
-//   b. If they do not, fetch them from OpenAI and save them to firestore

@@ -34,6 +34,8 @@ export default {
     FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
     FIREBASE_MESSAGING_SENDING_ID: process.env.FIREBASE_MESSAGING_SENDING_ID,
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
+    AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     eas: {
       projectId: 'c3d5c75d-dc2f-40fa-b593-7e7fdbae942b',
     },

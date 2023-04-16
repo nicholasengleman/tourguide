@@ -1,4 +1,7 @@
-<script src='http://192.168.1.16:8097'></script>;
+import AudioPlayback from '../components/AudioPlayback';
+import { TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import AppProvider from '../context/App.Provider';
 
 import { QuestionDataType } from '../services/FirestoreService';
 
@@ -14,8 +17,9 @@ import {
 import { Spinner } from '@ui-kitten/components';
 import OpenAIService from '../services/OpenAIService';
 import { getQuestion, addQuestion } from '../services/FirestoreService';
+import synthesizeSpeech from '../services/AmazonPolly';
 
-const AttractionScreen = ({ route }) => {
+const AttractionScreen = ({ route, navigation }) => {
   const [data, setData] = useState<QuestionDataType>({
     answer: '',
     city: '',
@@ -26,7 +30,13 @@ const AttractionScreen = ({ route }) => {
   });
   const { name, city } = route.params;
 
-  const fetchAnswer = async ({ question, followUpQuestion }: { question:string, followUpQuestion: string }) => {
+  const fetchAnswer = async ({
+    question,
+    followUpQuestion,
+  }: {
+    question: string;
+    followUpQuestion: string;
+  }) => {
     setData({
       answer: '',
       city: '',
@@ -41,7 +51,6 @@ const AttractionScreen = ({ route }) => {
       if (data) {
         setData(data);
       } else {
-
         const attraction = await OpenAIService.askQuestion({
           name,
           city,
@@ -51,11 +60,14 @@ const AttractionScreen = ({ route }) => {
 
         const data = JSON.parse(attraction?.message.content);
         if (data) {
+          const res = synthesizeSpeech(data?.answer);
+          console.log(res);
           setData({
             ...data,
             question: followUpQuestion,
             parentQuestion: question,
           });
+
           addQuestion({
             ...data,
             question: followUpQuestion,
@@ -72,43 +84,73 @@ const AttractionScreen = ({ route }) => {
     fetchAnswer({ question: '', followUpQuestion: `about the ${name}` });
   }, [name]);
 
+  useEffect(() => {
+    navigation.setOptions({
+      header: () => (
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+            flexWrap: 'wrap',
+          }}
+        >
+          <Text style={styles.title}>{data.question}</Text>
+        </View>
+      ),
+      headerLeft: () =>
+        data.parentQuestion && (
+          <TouchableOpacity
+            onPress={() =>
+              fetchAnswer({
+                question: '',
+                followUpQuestion: data.parentQuestion,
+              })
+            }
+          >
+            <Ionicons
+              name='ios-arrow-back'
+              size={30}
+              color='blue'
+              style={{ marginLeft: 20 }}
+            />
+          </TouchableOpacity>
+        ),
+    });
+  }, [data]);
+
   return (
     <SafeAreaView style={styles.main}>
-      <View style={styles.main}>
-        {!data.answer && (
-          <View style={styles.spinner}>
-            <Spinner size='giant' />
-          </View>
-        )}
-        {data?.answer && (
-          <>
-            <ScrollView>
-              <Text style={styles.title}>{data.question}</Text>
-              <Text style={styles.description}>{data.answer}</Text>
-            </ScrollView>
-            {data.parentQuestion && (
-              <Pressable
-                onPress={() => fetchAnswer({ question: '', followUpQuestion: data.parentQuestion })}
-                style={styles.goBackBtn}
-              >
-                <Text style={styles.goBackBtnTxt}>Go back</Text>
-              </Pressable>
-            )}
-
-            <View style={styles.questionContainer}>
-              {data.followUpQuestions?.map((followUpQuestion) => (
-                <Pressable
-                  style={styles.questionBtn}
-                  onPress={() => fetchAnswer({ question: data.question, followUpQuestion })}
-                  key={followUpQuestion}
-                >
-                  <Text style={styles.question}>{followUpQuestion}</Text>
-                </Pressable>
-              ))}
+      <AppProvider>
+        <View style={styles.main}>
+          {!data.answer && (
+            <View style={styles.spinner}>
+              <Spinner size='giant' />
             </View>
-          </>
-        )}
-      </View>
+          )}
+          {data?.answer && (
+            <>
+              <ScrollView>
+                <Text style={styles.description}>{data.answer}</Text>
+              </ScrollView>
+
+              <AudioPlayback answer={data?.answer} />
+              <View style={styles.questionContainer}>
+                {data.followUpQuestions?.map((followUpQuestion) => (
+                  <Pressable
+                    style={styles.questionBtn}
+                    onPress={() =>
+                      fetchAnswer({ question: data.question, followUpQuestion })
+                    }
+                    key={followUpQuestion}
+                  >
+                    <Text style={styles.question}>{followUpQuestion}</Text>
+                  </Pressable>
+                ))}
+              </View>
+            </>
+          )}
+        </View>
+      </AppProvider>
     </SafeAreaView>
   );
 };
@@ -124,9 +166,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 14,
-    marginLeft: 10,
-    marginTop: 20,
+    fontSize: 18,
     color: '#807575',
     fontStyle: 'italic',
   },
