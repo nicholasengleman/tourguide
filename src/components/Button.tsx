@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
   },
   buttonPressed: {
-    backgroundColor: 'blue',
+    backgroundColor: 'grey',
   },
   number: {
     color: 'black',

@@ -1,23 +1,14 @@
-import AudioPlayback from '../components/AudioPlayback';
-import { TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Pressable, SafeAreaView, ScrollView } from 'react-native';
 import AppProvider from '../context/App.Provider';
-
 import { QuestionDataType } from '../services/FirestoreService';
-
 import { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  Pressable,
-} from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { Spinner } from '@ui-kitten/components';
 import OpenAIService from '../services/OpenAIService';
 import { getQuestion, addQuestion } from '../services/FirestoreService';
-import synthesizeSpeech from '../services/AmazonPolly';
+import CustomHeader from '../components/AttractionHeader';
+import AudioPlayback from '../components/AudioPlayback';
+import { Ionicons } from '@expo/vector-icons';
 
 const AttractionScreen = ({ route, navigation }) => {
   const [data, setData] = useState<QuestionDataType>({
@@ -60,14 +51,11 @@ const AttractionScreen = ({ route, navigation }) => {
 
         const data = JSON.parse(attraction?.message.content);
         if (data) {
-          const res = synthesizeSpeech(data?.answer);
-          console.log(res);
           setData({
             ...data,
             question: followUpQuestion,
             parentQuestion: question,
           });
-
           addQuestion({
             ...data,
             question: followUpQuestion,
@@ -87,34 +75,12 @@ const AttractionScreen = ({ route, navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       header: () => (
-        <View
-          style={{
-            flexDirection: 'row',
-            flex: 1,
-            flexWrap: 'wrap',
-          }}
-        >
-          <Text style={styles.title}>{data.question}</Text>
-        </View>
+        <CustomHeader
+          title={data.question}
+          parentQuestion={data.parentQuestion}
+          fetchAnswer={fetchAnswer}
+        />
       ),
-      headerLeft: () =>
-        data.parentQuestion && (
-          <TouchableOpacity
-            onPress={() =>
-              fetchAnswer({
-                question: '',
-                followUpQuestion: data.parentQuestion,
-              })
-            }
-          >
-            <Ionicons
-              name='ios-arrow-back'
-              size={30}
-              color='blue'
-              style={{ marginLeft: 20 }}
-            />
-          </TouchableOpacity>
-        ),
     });
   }, [data]);
 
@@ -131,6 +97,23 @@ const AttractionScreen = ({ route, navigation }) => {
             <>
               <ScrollView>
                 <Text style={styles.description}>{data.answer}</Text>
+                {data.parentQuestion && (
+                  <Pressable
+                    onPress={() =>
+                      fetchAnswer({
+                        question: '',
+                        followUpQuestion: data.parentQuestion,
+                      })
+                    }
+                  >
+                    <Ionicons
+                      name='arrow-back-circle-outline'
+                      size={35}
+                      color='#d6d2d2'
+                      style={{ marginLeft: 10, marginTop: 20 }}
+                    />
+                  </Pressable>
+                )}
               </ScrollView>
 
               <AudioPlayback answer={data?.answer} />
@@ -171,12 +154,10 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   description: {
-    marginBottom: 20,
     fontSize: 18,
     lineHeight: 25,
     textAlign: 'left',
     paddingHorizontal: 10,
-    paddingVertical: 20,
   },
   questionContainer: {
     borderTopWidth: 1,

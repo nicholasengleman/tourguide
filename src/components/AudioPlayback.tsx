@@ -77,7 +77,7 @@ const AudioPlayback = ({ answer }) => {
   return (
     <View style={styles.audioControls}>
       <Pressable style={styles.repeatBtn} onPress={() => repeatAudio()}>
-        <Feather name='repeat' size={25} color='black' />
+        <Feather name='repeat' size={25} color='#d6d2d2' />
       </Pressable>
       {playStatus && (
         <Pressable style={styles.btn} onPress={() => pauseAudio()}>
@@ -91,12 +91,12 @@ const AudioPlayback = ({ answer }) => {
       )}
       {useAudio && (
         <Pressable style={styles.audioBtn} onPress={() => setUseAudio(false)}>
-          <Feather name='volume-2' size={30} color='black' />
+          <Feather name='volume-2' size={30} color='#d6d2d2' />
         </Pressable>
       )}
       {!useAudio && (
         <Pressable style={styles.audioBtn} onPress={() => setUseAudio(true)}>
-          <Feather name='volume-x' size={30} color='black' />
+          <Feather name='volume-x' size={30} color='#d6d2d2' />
         </Pressable>
       )}
     </View>
