@@ -11,24 +11,29 @@ const AudioPlayback = ({ answer }) => {
   const [playStatus, setPlayStatus] = useState<boolean>(false);
   const sound = useRef(null);
 
-  const loadAndPlayAudio = async (answer: string) => {
+  const loadAudio = async (answer: string) => {
     const soundObj = new Audio.Sound();
     try {
       const signedUrl = await SynthesizeSpeech(answer);
       await soundObj.loadAsync({ uri: signedUrl });
-      await soundObj.playAsync();
       sound.current = soundObj;
+
+      if (useAudio) {
+        playAudio();
+      }
     } catch (error) {
       console.error('Error loading and playing audio', error);
     }
   };
 
   const playAudio = async () => {
+    if (!useAudio) {
+      setUseAudio(true);
+    }
     if (sound.current) {
       try {
         await sound.current.playAsync();
         setPlayStatus(true);
-        setUseAudio(true);
       } catch (error) {
         console.error('Error playing audio', error);
       }
@@ -58,9 +63,8 @@ const AudioPlayback = ({ answer }) => {
   };
 
   useEffect(() => {
-    if (answer && useAudio) {
-      loadAndPlayAudio(answer);
-      setPlayStatus(true);
+    if (answer) {
+      loadAudio(answer);
     }
   }, [answer]);
 
@@ -71,6 +75,8 @@ const AudioPlayback = ({ answer }) => {
   useEffect(() => {
     if (!useAudio) {
       pauseAudio();
+    } else {
+      playAudio();
     }
   }, [useAudio]);
 

@@ -1,4 +1,4 @@
-import { Pressable, SafeAreaView, ScrollView } from 'react-native';
+import { Pressable, SafeAreaView, TextInput, Platform } from 'react-native';
 import AppProvider from '../context/App.Provider';
 import { QuestionDataType } from '../services/FirestoreService';
 import { useEffect, useState } from 'react';
@@ -9,8 +9,10 @@ import { getQuestion, addQuestion } from '../services/FirestoreService';
 import CustomHeader from '../components/AttractionHeader';
 import AudioPlayback from '../components/AudioPlayback';
 import { Ionicons } from '@expo/vector-icons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const AttractionScreen = ({ route, navigation }) => {
+  const [search, setSearch] = useState('');
   const [data, setData] = useState<QuestionDataType>({
     answer: '',
     city: '',
@@ -69,7 +71,7 @@ const AttractionScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    fetchAnswer({ question: '', followUpQuestion: `about the ${name}` });
+    fetchAnswer({ question: '', followUpQuestion: `About the ${name}` });
   }, [name]);
 
   useEffect(() => {
@@ -84,56 +86,61 @@ const AttractionScreen = ({ route, navigation }) => {
     });
   }, [data]);
 
+  const handleCustomQuestion = () => {
+    fetchAnswer({
+      question: data.question,
+      followUpQuestion: search,
+    });
+    setSearch('');
+  };
+
   return (
     <SafeAreaView style={styles.main}>
-      <AppProvider>
-        <View style={styles.main}>
-          {!data.answer && (
-            <View style={styles.spinner}>
-              <Spinner size='giant' />
-            </View>
-          )}
-          {data?.answer && (
-            <>
-              <ScrollView>
-                <Text style={styles.description}>{data.answer}</Text>
-                {data.parentQuestion && (
-                  <Pressable
-                    onPress={() =>
-                      fetchAnswer({
-                        question: '',
-                        followUpQuestion: data.parentQuestion,
-                      })
-                    }
-                  >
-                    <Ionicons
-                      name='arrow-back-circle-outline'
-                      size={35}
-                      color='#d6d2d2'
-                      style={{ marginLeft: 10, marginTop: 20 }}
-                    />
-                  </Pressable>
-                )}
-              </ScrollView>
-
-              <AudioPlayback answer={data?.answer} />
-              <View style={styles.questionContainer}>
-                {data.followUpQuestions?.map((followUpQuestion) => (
-                  <Pressable
-                    style={styles.questionBtn}
-                    onPress={() =>
-                      fetchAnswer({ question: data.question, followUpQuestion })
-                    }
-                    key={followUpQuestion}
-                  >
-                    <Text style={styles.question}>{followUpQuestion}</Text>
-                  </Pressable>
-                ))}
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps='handled'
+        extraScrollHeight={Platform.OS === 'ios' ? 0 : 20}
+      >
+        <AppProvider>
+          <View style={styles.main}>
+            {!data.answer && (
+              <View style={styles.spinner}>
+                <Spinner size='giant' />
               </View>
-            </>
-          )}
-        </View>
-      </AppProvider>
+            )}
+            {data?.answer && (
+              <>
+                <Text style={styles.description}>{data.answer}</Text>
+
+                <AudioPlayback answer={data?.answer} />
+                <View style={styles.questionContainer}>
+                  {data.followUpQuestions?.map((followUpQuestion) => (
+                    <Pressable
+                      style={styles.questionBtn}
+                      onPress={() =>
+                        fetchAnswer({
+                          question: data.question,
+                          followUpQuestion,
+                        })
+                      }
+                      key={followUpQuestion}
+                    >
+                      <Text style={styles.question}>{followUpQuestion}</Text>
+                    </Pressable>
+                  ))}
+                  <TextInput
+                    style={styles.searchInput}
+                    placeholder='Ask a different question'
+                    onChangeText={(text) => setSearch(text)}
+                    value={search}
+                    keyboardType='default'
+                    onSubmitEditing={() => handleCustomQuestion()}
+                  />
+                </View>
+              </>
+            )}
+          </View>
+        </AppProvider>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };
@@ -142,6 +149,11 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     paddingHorizontal: 20,
+  },
+  container: {
+    flex: 1,
+    marginBottom: 20,
+    paddingBottom: 20,
   },
   spinner: {
     flex: 1,
@@ -158,6 +170,14 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     textAlign: 'left',
     paddingHorizontal: 10,
+    paddingBottom: 20,
+  },
+  searchInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    paddingLeft: 10,
+    borderRadius: 5,
   },
   questionContainer: {
     borderTopWidth: 1,

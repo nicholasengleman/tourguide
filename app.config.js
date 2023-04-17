@@ -15,6 +15,7 @@ export default {
   assetBundlePatterns: ['**/*'],
   ios: {
     supportsTablet: true,
+    bundleIdentifier: 'com.tourguide',
   },
   android: {
     jsEngine: 'hermes',
