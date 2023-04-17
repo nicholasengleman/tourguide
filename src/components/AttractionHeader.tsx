@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 export const CustomHeader = ({ title, parentQuestion, fetchAnswer }) => (
   <SafeAreaView>
     <View style={styles.headerContent}>
+      <Text style={styles.headerText}>{title}</Text>
       {parentQuestion && (
         <Pressable
           onPress={() =>
@@ -17,10 +18,11 @@ export const CustomHeader = ({ title, parentQuestion, fetchAnswer }) => (
             <Ionicons
               name='arrow-back-circle-outline'
               size={30}
-              color='#d6d2d2'
-              style={{ marginRight: 10 }}
+              color='#594c4c'
+              style={{
+                transform: [{ rotate: '90deg' }],
+              }}
             />
-            <Text style={styles.headerText}>{title}</Text>
           </View>
         </Pressable>
       )}
@@ -32,10 +34,10 @@ const styles = StyleSheet.create({
   headerContent: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 30,
     paddingTop: 15,
     paddingBottom: 15,
-    marginBottom: 15,
     borderBottomColor: '#d6d2d2',
     borderBottomWidth: 1,
   },
@@ -47,6 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontStyle: 'italic',
     color: '#594c4c',
+    marginLeft: 10,
   },
 });
 

@@ -10,6 +10,7 @@ import CustomHeader from '../components/AttractionHeader';
 import AudioPlayback from '../components/AudioPlayback';
 import { Ionicons } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const AttractionScreen = ({ route, navigation }) => {
   const [search, setSearch] = useState('');
@@ -110,7 +111,6 @@ const AttractionScreen = ({ route, navigation }) => {
             {data?.answer && (
               <>
                 <Text style={styles.description}>{data.answer}</Text>
-
                 <AudioPlayback answer={data?.answer} />
                 <View style={styles.questionContainer}>
                   {data.followUpQuestions?.map((followUpQuestion) => (
@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 20,
   },
   container: {
     flex: 1,
@@ -173,15 +174,15 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   searchInput: {
-    height: 40,
-    borderColor: 'gray',
+    height: 35,
+    borderColor: '#594c4c',
     borderWidth: 1,
     paddingLeft: 10,
     borderRadius: 5,
   },
   questionContainer: {
     borderTopWidth: 1,
-    borderTopColor: '#261a1a',
+    borderTopColor: '#d6d2d2',
     marginTop: 5,
     paddingTop: 10,
   },

@@ -3,7 +3,7 @@ import { Audio } from 'expo-av';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import SynthesizeSpeech from '../services/AmazonPolly';
+import { ConvertTextToSpeech } from '../services/ConvertTextToSpeech';
 import AppContext from '../context/App.Context';
 
 const AudioPlayback = ({ answer }) => {
@@ -11,11 +11,27 @@ const AudioPlayback = ({ answer }) => {
   const [playStatus, setPlayStatus] = useState<boolean>(false);
   const sound = useRef(null);
 
+  const blobToBase64 = async (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => {
+        reader.abort();
+        reject(new Error('Problem parsing the Blob to base64'));
+      };
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    });
+  };
+
   const loadAudio = async (answer: string) => {
     const soundObj = new Audio.Sound();
     try {
-      const signedUrl = await SynthesizeSpeech(answer);
-      await soundObj.loadAsync({ uri: signedUrl });
+      const audioBlob = await ConvertTextToSpeech(answer);
+      const base64DataUrl = await blobToBase64(audioBlob);
+
+      await soundObj.loadAsync({ uri: base64DataUrl });
       sound.current = soundObj;
 
       if (useAudio) {
