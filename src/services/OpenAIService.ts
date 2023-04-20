@@ -57,7 +57,7 @@ class OpenAIService {
           },
           {
             role: 'user',
-            content: `I am a tourist at ${name} in ${city}. Can you please tell me ${followUpQuestion} in 800 words and then please suggest 4 follow-up question that will give me more information about the history of ${followUpQuestion}. Each follow up question should be no more than 10 words. ${this.JSONFormatInstructions}`,
+            content: `I am a tourist at ${name} in ${city}. Can you please tell me ${followUpQuestion} in 1000 words and then please suggest 4 follow-up question that will give me more information about the history of ${followUpQuestion}. Each follow up question should be no more than 10 words. ${this.JSONFormatInstructions}`,
           },
         ],
       });

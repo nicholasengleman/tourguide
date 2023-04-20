@@ -11,6 +11,7 @@ import AudioPlayback from '../components/AudioPlayback';
 import { Ionicons } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView } from 'react-native-gesture-handler';
+import colors from '../components/colors';
 
 const AttractionScreen = ({ route, navigation }) => {
   const [search, setSearch] = useState('');
@@ -97,21 +98,20 @@ const AttractionScreen = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <KeyboardAwareScrollView
-        keyboardShouldPersistTaps='handled'
-        extraScrollHeight={Platform.OS === 'ios' ? 0 : 20}
-      >
-        <AppProvider>
-          <View style={styles.main}>
-            {!data.answer && (
-              <View style={styles.spinner}>
-                <Spinner size='giant' />
-              </View>
-            )}
-            {data?.answer && (
-              <>
+      <AppProvider>
+        <View style={styles.main}>
+          {!data.answer && (
+            <View style={styles.spinner}>
+              <Spinner size='giant' />
+            </View>
+          )}
+          {data?.answer && (
+            <>
+              <KeyboardAwareScrollView
+                keyboardShouldPersistTaps='handled'
+                extraScrollHeight={Platform.OS === 'ios' ? 0 : 20}
+              >
                 <Text style={styles.description}>{data.answer}</Text>
-                <AudioPlayback answer={data?.answer} />
                 <View style={styles.questionContainer}>
                   {data.followUpQuestions?.map((followUpQuestion) => (
                     <Pressable
@@ -136,11 +136,12 @@ const AttractionScreen = ({ route, navigation }) => {
                     onSubmitEditing={() => handleCustomQuestion()}
                   />
                 </View>
-              </>
-            )}
-          </View>
-        </AppProvider>
-      </KeyboardAwareScrollView>
+              </KeyboardAwareScrollView>
+              <AudioPlayback answer={data?.answer} />
+            </>
+          )}
+        </View>
+      </AppProvider>
     </SafeAreaView>
   );
 };
@@ -148,8 +149,6 @@ const AttractionScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 20,
   },
   container: {
     flex: 1,
@@ -168,26 +167,25 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 18,
-    lineHeight: 25,
+    lineHeight: 22,
     textAlign: 'left',
-    paddingHorizontal: 10,
-    paddingBottom: 20,
+    paddingHorizontal: 30,
+    paddingVertical: 20,
   },
   searchInput: {
     height: 35,
-    borderColor: '#594c4c',
+    borderColor: colors.primary,
     borderWidth: 1,
     paddingLeft: 10,
     borderRadius: 5,
   },
   questionContainer: {
-    borderTopWidth: 1,
-    borderTopColor: '#d6d2d2',
     marginTop: 5,
-    paddingTop: 10,
+    paddingHorizontal: 30,
+    marginBottom: '50%',
   },
   questionBtn: {
-    backgroundColor: '#594c4c',
+    backgroundColor: colors.primary,
     paddingVertical: 8,
     paddingHorizontal: 10,
     marginBottom: 5,

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontStyle: 'italic',
     color: '#594c4c',
-    marginLeft: 10,
+    maxWidth: '80%',
   },
 });
 
