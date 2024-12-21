@@ -1,5 +1,5 @@
-import Constants from 'expo-constants';
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
+import Constants from "expo-constants";
+import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 
 interface AskQuestionsParams {
   followUpQuestion: string;
@@ -23,13 +23,13 @@ class OpenAIService {
   private JSONFormatInstructions: string;
 
   constructor() {
-    if (!Constants.manifest?.extra?.OPEN_AI_KEY) {
+    if (!Constants.expoConfig.extra.OPEN_AI_KEY) {
       throw new Error(
-        'Please provide an OpenAI API key in your app.json or app.config.js file.'
+        "Please provide an OpenAI API key in your app.json or app.config.js file."
       );
     }
     this.configuration = new Configuration({
-      apiKey: Constants.manifest?.extra?.OPEN_AI_KEY,
+      apiKey: Constants?.expoConfig?.extra?.OPEN_AI_KEYs,
     });
     this.openai = new OpenAIApi(this.configuration);
 
@@ -49,14 +49,14 @@ class OpenAIService {
   }: AskQuestionsParams): Promise<AskQuestionsResponse> => {
     try {
       const completion = await this.openai.createChatCompletion({
-        model: 'gpt-3.5-turbo',
+        model: "gpt-3.5-turbo",
         messages: [
           {
-            role: 'system',
-            content: 'Your a friendly and knowledgeable tour guide',
+            role: "system",
+            content: "Your a friendly and knowledgeable tour guide",
           },
           {
-            role: 'user',
+            role: "user",
             content: `I am a tourist at ${name} in ${city}. Can you please tell me ${followUpQuestion} in 1000 words and then please suggest 4 follow-up question that will give me more information about the history of ${followUpQuestion}. Each follow up question should be no more than 10 words. ${this.JSONFormatInstructions}`,
           },
         ],
@@ -64,10 +64,10 @@ class OpenAIService {
 
       return { message: completion.data.choices[0].message };
     } catch (error) {
-      console.error('Error in getDescription:', error);
+      console.error("Error in getDescription:", error);
       return {
         error:
-          'An error occurred while fetching the description. Please try again.',
+          "An error occurred while fetching the description. Please try again.",
       };
     }
   };

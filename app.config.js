@@ -1,31 +1,32 @@
-require('dotenv').config();
+require("dotenv").config();
 
 export default {
-  name: 'tour-guide',
-  slug: 'tour-guide',
-  version: '1.0.0',
-  orientation: 'portrait',
-  icon: './assets/icon.png',
-  userInterfaceStyle: 'light',
+  name: "tour-guide",
+  slug: "tour-guide",
+  version: "1.0.0",
+  orientation: "portrait",
+  icon: "./assets/icon.png",
+  userInterfaceStyle: "light",
+  newArchEnabled: true,
   splash: {
-    image: './assets/splash.png',
-    resizeMode: 'contain',
-    backgroundColor: '#ffffff',
+    image: "./assets/splash.png",
+    resizeMode: "contain",
+    backgroundColor: "#ffffff",
   },
-  assetBundlePatterns: ['**/*'],
+  assetBundlePatterns: ["**/*"],
   ios: {
     supportsTablet: true,
-    bundleIdentifier: 'com.tourguide',
+    bundleIdentifier: "com.tourguide",
   },
   android: {
-    jsEngine: 'hermes',
+    jsEngine: "hermes",
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
-      backgroundColor: '#ffffff',
+      foregroundImage: "./assets/adaptive-icon.png",
+      backgroundColor: "#ffffff",
     },
   },
   web: {
-    favicon: './assets/favicon.png',
+    favicon: "./assets/favicon.png",
   },
   extra: {
     OPEN_AI_KEY: process.env.OPEN_AI_KEY,
@@ -37,9 +38,9 @@ export default {
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
     AWS_SPEECH_KEY: process.env.AWS_SPEECH_KEY,
     eas: {
-      projectId: 'c3d5c75d-dc2f-40fa-b593-7e7fdbae942b',
+      projectId: "c3d5c75d-dc2f-40fa-b593-7e7fdbae942b",
     },
   },
-  owner: 'aicccia',
-  plugins: ['expo-build-properties'],
+  owner: "aicccia",
+  plugins: ["expo-build-properties"],
 };
