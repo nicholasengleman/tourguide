@@ -1,21 +1,21 @@
-import { useEffect } from 'react';
-import { View, Image, StyleSheet, Pressable } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NavigationProps } from '../../routes';
-import { Text } from '@ui-kitten/components';
+import { useEffect } from "react";
+import { View, Image, StyleSheet, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProps } from "../../routes";
+import { Text } from "@ui-kitten/components";
 
 interface LandmarkTileProps {
   name: string;
   image: string;
   city: string;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 const LandMarkTile: React.FC<LandmarkTileProps> = ({ name, image, city }) => {
   const navigation = useNavigation<NavigationProps>();
 
   const onPress = () => {
-    navigation.navigate('Attraction', { name, city });
+    navigation.navigate("Attraction", { name, city });
   };
 
   return (
@@ -23,7 +23,7 @@ const LandMarkTile: React.FC<LandmarkTileProps> = ({ name, image, city }) => {
       <View style={styles.content}>
         <View style={styles.imageContainer}>
           <Image
-            resizeMode='cover'
+            resizeMode="cover"
             source={{ uri: image }}
             style={styles.image}
           />
@@ -38,36 +38,36 @@ const LandMarkTile: React.FC<LandmarkTileProps> = ({ name, image, city }) => {
 
 const styles = StyleSheet.create({
   tile: {
-    width: '45%',
+    width: "45%",
     borderRadius: 20,
-    borderColor: 'white',
+    borderColor: "white",
     borderWidth: 1,
     margin: 10,
   },
   content: {
-    width: '100%',
+    width: "100%",
     borderRadius: 20,
-    borderColor: 'lightgrey',
+    borderColor: "lightgrey",
     borderWidth: 5,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   imageContainer: {
-    width: '100%',
+    width: "100%",
     height: 100,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   textContent: {
     padding: 5,
   },
   cityName: {
-    fontFamily: 'Roboto-Regular',
-    textAlign: 'center',
+    fontFamily: "Roboto-Regular",
+    textAlign: "center",
     fontSize: 12,
   },
 });

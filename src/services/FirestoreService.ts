@@ -1,4 +1,4 @@
-import db from '../lib/firebaseConfig.js';
+import db from "../../firebaseConfig";
 import {
   collection,
   addDoc,
@@ -7,7 +7,7 @@ import {
   where,
   DocumentData,
   QuerySnapshot,
-} from 'firebase/firestore';
+} from "firebase/firestore";
 
 export interface QuestionDataType {
   question: string;
@@ -21,16 +21,16 @@ export interface QuestionDataType {
 export async function getQuestion(
   question: string
 ): Promise<QuestionDataType | false> {
-  const collectionRef = collection(db, 'questions');
-  const q = query(collectionRef, where('question', '==', question));
+  const collectionRef = collection(db, "questions");
+  const q = query(collectionRef, where("question", "==", question));
   try {
     const querySnapshot = (await getDocs(q)) as QuerySnapshot<QuestionDataType>;
 
     if (querySnapshot.empty) {
-      console.log('No firestore document found with the specified question');
+      console.log("No firestore document found with the specified question");
       return false;
     } else {
-      console.log('Firestore documents found for the specified question');
+      console.log("Firestore documents found for the specified question");
       let results: DocumentData[] = [];
       querySnapshot.forEach((doc) => {
         results.push(doc.data());
@@ -38,15 +38,15 @@ export async function getQuestion(
       return results[0] as QuestionDataType;
     }
   } catch (e) {
-    console.error('Error adding document:', e);
+    console.error("Error adding document:", e);
     return false;
   }
 }
 
 export async function addQuestion(data: QuestionDataType): Promise<void> {
   try {
-    await addDoc(collection(db, 'questions'), data);
+    await addDoc(collection(db, "questions"), data);
   } catch (e) {
-    console.error('Error adding document:', e);
+    console.error("Error adding document:", e);
   }
 }

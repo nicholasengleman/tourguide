@@ -1,9 +1,9 @@
-import { Text } from '@ui-kitten/components';
-import { Image, StyleSheet, View } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { Button } from './Button';
-import { NavigationProps } from '../../routes';
+import { Text } from "@ui-kitten/components";
+import { Image, StyleSheet, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { Button } from "./../Button/Button";
+import { NavigationProps } from "./../../routes";
 
 interface CityTileProps {
   image: string;
@@ -23,7 +23,7 @@ const CityTile: React.FC<CityTileProps> = ({
   const navigation = useNavigation<NavigationProps>();
 
   const onPress = () => {
-    navigation.navigate('City', { cityId });
+    navigation.navigate("City", { cityId });
   };
 
   return (
@@ -31,23 +31,24 @@ const CityTile: React.FC<CityTileProps> = ({
       <View style={styles.content}>
         <View style={styles.imageContainer}>
           <Image
-            resizeMode='cover'
+            resizeMode="cover"
             source={{ uri: image }}
             style={styles.image}
+            testID="city-tile-image"
           />
         </View>
         <View style={styles.textContent}>
-          <Text style={styles.cityName} category='h5'>
+          <Text style={styles.cityName} category="h5">
             {cityName}
           </Text>
           <Text style={styles.cityDescription}>{cityDescription}</Text>
           <View style={styles.textContentFooter}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <MaterialIcons name='place' size={12} color='black' />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <MaterialIcons name="place" size={12} color="black" />
               <Text style={styles.locationText}>{country}</Text>
             </View>
 
-            <Button number={5} text='Landmarks' onPress={onPress} />
+            <Button number={5} text="Landmarks" onPress={onPress} />
           </View>
         </View>
       </View>
@@ -59,50 +60,50 @@ const styles = StyleSheet.create({
   tile: {
     width: 300,
     borderRadius: 20,
-    borderColor: 'white',
+    borderColor: "white",
     borderWidth: 1,
   },
   content: {
-    width: '100%',
+    width: "100%",
     borderRadius: 20,
-    borderColor: 'lightgrey',
+    borderColor: "lightgrey",
     borderWidth: 10,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   imageContainer: {
-    width: '100%',
+    width: "100%",
     height: 200,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   textContent: {
     padding: 20,
   },
   cityName: {
-    fontFamily: 'Roboto-Regular',
+    fontFamily: "Roboto-Regular",
     marginBottom: 10,
   },
   cityDescription: {
-    fontFamily: 'Roboto-Regular',
+    fontFamily: "Roboto-Regular",
     marginBottom: 10,
     lineHeight: 20,
   },
   textContentFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginTop: 20,
   },
   locationText: {
     fontSize: 12,
     marginLeft: 5,
-    color: 'grey',
-    fontFamily: 'Roboto-Regular',
+    color: "grey",
+    fontFamily: "Roboto-Regular",
   },
 });
 

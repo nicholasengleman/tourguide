@@ -42,5 +42,4 @@ export default {
     },
   },
   owner: "aicccia",
-  plugins: ["expo-build-properties"],
 };

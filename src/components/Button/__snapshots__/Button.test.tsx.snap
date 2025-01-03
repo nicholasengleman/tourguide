@@ -1,0 +1,268 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Button /> applies pressed styles when the button is pressed: pressed 1`] = `
+<View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "lightgrey",
+          "borderRadius": 20,
+          "flexDirection": "row",
+          "fontFamily": "Roboto-Regular",
+          "gap": 5,
+          "paddingHorizontal": 15,
+          "paddingVertical": 5,
+        },
+        null,
+      ]
+    }
+  >
+    <Text>
+      Click me
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "borderWidth": 2,
+          "color": "black",
+          "elevation": 5,
+          "height": 23,
+          "justifyContent": "center",
+          "marginLeft": 5,
+          "overflow": "hidden",
+          "shadowColor": "black",
+          "shadowOffset": {
+            "height": 5,
+            "width": 5,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 6,
+          "width": 23,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "fontFamily": "Roboto-Bold",
+          }
+        }
+      >
+        5
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<Button /> applies pressed styles when the button is pressed: unpressed 1`] = `
+<View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "lightgrey",
+          "borderRadius": 20,
+          "flexDirection": "row",
+          "fontFamily": "Roboto-Regular",
+          "gap": 5,
+          "paddingHorizontal": 15,
+          "paddingVertical": 5,
+        },
+        null,
+      ]
+    }
+  >
+    <Text>
+      Click me
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "borderWidth": 2,
+          "color": "black",
+          "elevation": 5,
+          "height": 23,
+          "justifyContent": "center",
+          "marginLeft": 5,
+          "overflow": "hidden",
+          "shadowColor": "black",
+          "shadowOffset": {
+            "height": 5,
+            "width": 5,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 6,
+          "width": 23,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "fontFamily": "Roboto-Bold",
+          }
+        }
+      >
+        5
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<Button /> matches snapshot 1`] = `
+<View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "lightgrey",
+          "borderRadius": 20,
+          "flexDirection": "row",
+          "fontFamily": "Roboto-Regular",
+          "gap": 5,
+          "paddingHorizontal": 15,
+          "paddingVertical": 5,
+        },
+        null,
+      ]
+    }
+  >
+    <Text>
+      Click me
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "borderWidth": 2,
+          "color": "black",
+          "elevation": 5,
+          "height": 23,
+          "justifyContent": "center",
+          "marginLeft": 5,
+          "overflow": "hidden",
+          "shadowColor": "black",
+          "shadowOffset": {
+            "height": 5,
+            "width": 5,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 6,
+          "width": 23,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "fontFamily": "Roboto-Bold",
+          }
+        }
+      >
+        5
+      </Text>
+    </View>
+  </View>
+</View>
+`;

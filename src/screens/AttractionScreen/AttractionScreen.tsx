@@ -1,27 +1,27 @@
-import { Pressable, SafeAreaView, TextInput, Platform } from 'react-native';
-import AppProvider from '../context/App.Provider';
-import { QuestionDataType } from '../services/FirestoreService';
-import { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { Spinner } from '@ui-kitten/components';
-import OpenAIService from '../services/OpenAIService';
-import { getQuestion, addQuestion } from '../services/FirestoreService';
-import CustomHeader from '../components/AttractionHeader';
-import AudioPlayback from '../components/AudioPlayback';
-import { Ionicons } from '@expo/vector-icons';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ScrollView } from 'react-native-gesture-handler';
-import colors from '../components/colors';
+import { Pressable, SafeAreaView, TextInput, Platform } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Ionicons } from "@expo/vector-icons";
+import { ScrollView } from "react-native-gesture-handler";
+import AppProvider from "../../context/App.Provider";
+import { QuestionDataType } from "../../services/FirestoreService";
+import { useEffect, useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import { Spinner } from "@ui-kitten/components";
+import OpenAIService from "../../services/OpenAIService";
+import { getQuestion, addQuestion } from "../../services/FirestoreService";
+import AttractionHeader from "../../components/AttractionHeader/AttractionHeader";
+import AudioPlayback from "../../components/AudioPlayback/AudioPlayback";
+import colors from "../../components/colors";
 
 const AttractionScreen = ({ route, navigation }) => {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [data, setData] = useState<QuestionDataType>({
-    answer: '',
-    city: '',
+    answer: "",
+    city: "",
     followUpQuestions: [],
-    landmark: '',
-    parentQuestion: '',
-    question: '',
+    landmark: "",
+    parentQuestion: "",
+    question: "",
   });
   const { name, city } = route.params;
 
@@ -33,12 +33,12 @@ const AttractionScreen = ({ route, navigation }) => {
     followUpQuestion: string;
   }) => {
     setData({
-      answer: '',
-      city: '',
+      answer: "",
+      city: "",
       followUpQuestions: [],
-      landmark: '',
-      parentQuestion: '',
-      question: '',
+      landmark: "",
+      parentQuestion: "",
+      question: "",
     });
 
     try {
@@ -51,7 +51,7 @@ const AttractionScreen = ({ route, navigation }) => {
           city,
           followUpQuestion,
         });
-        console.log('Data received from Open AI Service:');
+        console.log("Data received from Open AI Service:");
 
         const data = JSON.parse(attraction?.message.content);
         if (data) {
@@ -73,13 +73,13 @@ const AttractionScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    fetchAnswer({ question: '', followUpQuestion: `About the ${name}` });
+    fetchAnswer({ question: "", followUpQuestion: `About the ${name}` });
   }, [name]);
 
   useEffect(() => {
     navigation.setOptions({
       header: () => (
-        <CustomHeader
+        <AttractionHeader
           title={data.question}
           parentQuestion={data.parentQuestion}
           fetchAnswer={fetchAnswer}
@@ -93,7 +93,7 @@ const AttractionScreen = ({ route, navigation }) => {
       question: data.question,
       followUpQuestion: search,
     });
-    setSearch('');
+    setSearch("");
   };
 
   return (
@@ -102,14 +102,14 @@ const AttractionScreen = ({ route, navigation }) => {
         <View style={styles.main}>
           {!data.answer && (
             <View style={styles.spinner}>
-              <Spinner size='giant' />
+              <Spinner size="giant" />
             </View>
           )}
           {data?.answer && (
             <>
               <KeyboardAwareScrollView
-                keyboardShouldPersistTaps='handled'
-                extraScrollHeight={Platform.OS === 'ios' ? 0 : 20}
+                keyboardShouldPersistTaps="handled"
+                extraScrollHeight={Platform.OS === "ios" ? 0 : 20}
               >
                 <Text style={styles.description}>{data.answer}</Text>
                 <View style={styles.questionContainer}>
@@ -129,10 +129,10 @@ const AttractionScreen = ({ route, navigation }) => {
                   ))}
                   <TextInput
                     style={styles.searchInput}
-                    placeholder='Ask a different question'
+                    placeholder="Ask a different question"
                     onChangeText={(text) => setSearch(text)}
                     value={search}
-                    keyboardType='default'
+                    keyboardType="default"
                     onSubmitEditing={() => handleCustomQuestion()}
                   />
                 </View>
@@ -157,18 +157,18 @@ const styles = StyleSheet.create({
   },
   spinner: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 18,
-    color: '#807575',
-    fontStyle: 'italic',
+    color: "#807575",
+    fontStyle: "italic",
   },
   description: {
     fontSize: 18,
     lineHeight: 22,
-    textAlign: 'left',
+    textAlign: "left",
     paddingHorizontal: 30,
     paddingVertical: 20,
   },
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   questionContainer: {
     marginTop: 5,
     paddingHorizontal: 30,
-    marginBottom: '50%',
+    marginBottom: "50%",
   },
   questionBtn: {
     backgroundColor: colors.primary,
@@ -192,26 +192,26 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   goBackBtn: {
-    backgroundColor: '#c4b9b9',
+    backgroundColor: "#c4b9b9",
     paddingVertical: 5,
     paddingHorizontal: 8,
     marginTop: 20,
     marginBottom: 5,
     borderRadius: 5,
-    color: '#3f3737',
-    alignSelf: 'flex-start',
+    color: "#3f3737",
+    alignSelf: "flex-start",
   },
   goBackBtnTxt: {
-    color: '#4f4747',
+    color: "#4f4747",
     fontSize: 12,
   },
   question: {
     fontSize: 14,
-    color: '#fff',
+    color: "#fff",
   },
   cityName: {
-    fontFamily: 'Roboto-Bold',
-    textAlign: 'center',
+    fontFamily: "Roboto-Bold",
+    textAlign: "center",
     marginBottom: 10,
   },
 });

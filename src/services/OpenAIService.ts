@@ -1,5 +1,6 @@
 import Constants from "expo-constants";
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
+import { ChatCompletionMessageParam } from "openai/resources";
 
 interface AskQuestionsParams {
   followUpQuestion: string;
@@ -8,7 +9,7 @@ interface AskQuestionsParams {
 }
 
 interface AskQuestionsResponse {
-  message?: ChatCompletionRequestMessage;
+  message?: ChatCompletionMessageParam;
   error?: string;
 }
 
@@ -18,9 +19,8 @@ export interface OpenAIResponse {
 }
 
 class OpenAIService {
-  private configuration: Configuration;
-  private openai: OpenAIApi;
   private JSONFormatInstructions: string;
+  private openai: OpenAI;
 
   constructor() {
     if (!Constants.expoConfig.extra.OPEN_AI_KEY) {
@@ -28,10 +28,9 @@ class OpenAIService {
         "Please provide an OpenAI API key in your app.json or app.config.js file."
       );
     }
-    this.configuration = new Configuration({
-      apiKey: Constants?.expoConfig?.extra?.OPEN_AI_KEYs,
+    this.openai = new OpenAI({
+      apiKey: Constants.expoConfig.extra.OPEN_AI_KEY,
     });
-    this.openai = new OpenAIApi(this.configuration);
 
     this.JSONFormatInstructions = `
      Return this data in a json object. Use the key "answer" to store the answer data and the key "followUpQuestions" to store the follow-up questions data.
@@ -48,7 +47,7 @@ class OpenAIService {
     name,
   }: AskQuestionsParams): Promise<AskQuestionsResponse> => {
     try {
-      const completion = await this.openai.createChatCompletion({
+      const chatCompletions = await this.openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
           {
@@ -62,7 +61,7 @@ class OpenAIService {
         ],
       });
 
-      return { message: completion.data.choices[0].message };
+      return { message: chatCompletions.choices[0].message };
     } catch (error) {
       console.error("Error in getDescription:", error);
       return {
